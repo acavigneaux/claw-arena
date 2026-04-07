@@ -20,16 +20,22 @@ export function useTheme() {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    // Read from localStorage on mount
     const stored = localStorage.getItem("theme") as Theme | null;
     if (stored) {
       setTheme(stored);
-      document.documentElement.classList.toggle("dark", stored === "dark");
-      document.documentElement.classList.toggle("light", stored === "light");
+      if (stored === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     } else {
+      // Default to dark
       document.documentElement.classList.add("dark");
-      document.documentElement.classList.remove("light");
     }
   }, []);
 
@@ -37,8 +43,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-    document.documentElement.classList.toggle("light", newTheme === "light");
+    if (newTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
 
   return (

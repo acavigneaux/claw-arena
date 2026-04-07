@@ -25,8 +25,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="dark">
-      <body className="min-h-full flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <html lang="fr" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col">
         <ThemeProvider>
           <Navbar />
           <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-8">
