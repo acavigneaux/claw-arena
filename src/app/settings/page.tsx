@@ -1,22 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "../../components/Card";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
 import Toggle from "../../components/Toggle";
 import Button from "../../components/Button";
+import { useTheme } from "../../components/ThemeProvider";
 
 export default function SettingsPage() {
+  const { theme, toggleTheme } = useTheme();
   const [settings, setSettings] = useState({
     projectName: "Claw Arena",
     language: "fr",
-    darkMode: false,
+    darkMode: true,
     notifications: true,
     autoSave: true,
     apiUrl: "https://api.example.com",
   });
   const [saved, setSaved] = useState(false);
+
+  // Sync darkMode toggle with actual theme
+  useEffect(() => {
+    setSettings((prev) => ({ ...prev, darkMode: theme === "dark" }));
+  }, [theme]);
+
+  const handleDarkModeChange = (checked: boolean) => {
+    setSettings({ ...settings, darkMode: checked });
+    if (checked !== (theme === "dark")) {
+      toggleTheme();
+    }
+  };
 
   const handleSave = () => {
     setSaved(true);
@@ -76,9 +90,7 @@ export default function SettingsPage() {
               id="darkMode"
               label="Mode sombre"
               checked={settings.darkMode}
-              onChange={(checked) =>
-                setSettings({ ...settings, darkMode: checked })
-              }
+              onChange={handleDarkModeChange}
             />
             <Toggle
               id="notifications"
