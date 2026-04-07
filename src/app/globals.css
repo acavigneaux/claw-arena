@@ -7,6 +7,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Force dark mode backgrounds */
+.dark {
+  color-scheme: dark;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
